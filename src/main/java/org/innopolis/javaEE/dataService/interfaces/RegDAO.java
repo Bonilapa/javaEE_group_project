@@ -2,6 +2,6 @@ package org.innopolis.javaEE.dataService.interfaces;
 
 import org.innopolis.javaEE.dataService.pojo.User;
 
-public interface AuthDAO{
-    User getUserByLoginPassword(String login, String password);
+public interface RegDAO {
+    void addNewUser(User user);
 }

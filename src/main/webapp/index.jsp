@@ -11,6 +11,7 @@
     <title>$Title$</title>
   </head>
   <body>
+  indexjsp
   $END$
   </body>
 </html>

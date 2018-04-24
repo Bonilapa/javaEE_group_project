@@ -19,18 +19,18 @@ import java.io.IOException;
 public class ExportController {
     private final static Logger LOGGER = LoggerFactory.getLogger(ExportController.class);
 
-    private final ExportService exportService;
+//    private final ExportService exportService;
 
-    @Autowired
-    public ExportController(ExportService exportService){
-        this.exportService = exportService;
-    }
+//    @Autowired
+//    public ExportController(ExportService exportService){
+//        this.exportService = exportService;
+//    }
 
-    public void getExportFile(HttpServletResponse response) throws IOException, ServiceException {
-        LOGGER.debug("Getting export file");
-        byte[] file = exportService.getExportFile();
-        ServletOutputStream out = response.getOutputStream();
-        out.write(file);
-        out.flush();
-    }
+//    public void getExportFile(HttpServletResponse response) throws IOException, ServiceException {
+//        LOGGER.debug("Getting export file");
+//        byte[] file = exportService.getExportFile();
+//        ServletOutputStream out = response.getOutputStream();
+//        out.write(file);
+//        out.flush();
+//    }
 }

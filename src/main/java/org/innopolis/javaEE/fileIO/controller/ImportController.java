@@ -18,29 +18,29 @@ import java.io.File;
 @RequestMapping("/import")
 public class ImportController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImportController.class);
-
-    private final ImportService importService;
-
-    @Autowired
-    public ImportController(ImportService importService) {
-        this.importService = importService;
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String importGetRequest(){
-        LOGGER.error("Get request for import file in system");
-        return "import";
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public String index1GetRequest(@RequestParam("file") MultipartFile file){
-        LOGGER.error("Getting input file");
-        try {
-            importService.processFile((File)file);
-        } catch (ServiceException e) {
-            LOGGER.error("Service exception has occured. {}", e.getMessage());
-        }
-        return "import";
-    }
+//
+//    private final ImportService importService;
+//
+//    @Autowired
+//    public ImportController(ImportService importService) {
+//        this.importService = importService;
+//    }
+//
+//    @RequestMapping(method = RequestMethod.GET)
+//    public String importGetRequest(){
+//        LOGGER.error("Get request for import file in system");
+//        return "import";
+//    }
+//
+//    @RequestMapping(method = RequestMethod.POST)
+//    public String index1GetRequest(@RequestParam("file") MultipartFile file){
+//        LOGGER.error("Getting input file");
+//        try {
+//            importService.processFile((File)file);
+//        } catch (ServiceException e) {
+//            LOGGER.error("Service exception has occured. {}", e.getMessage());
+//        }
+//        return "import";
+//    }
 
 }
