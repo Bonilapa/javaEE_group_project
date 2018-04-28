@@ -51,4 +51,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public Employee getEmployee(int id) {
         return null;
     }
+
+    @Override
+    public void addEmployee(Employee employee) {
+        System.out.println("Added");
+    }
+
+    @Override
+    public void clearEmployees() {
+        System.out.println("Cleared");
+    }
 }
