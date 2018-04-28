@@ -28,18 +28,20 @@ public class AdminFilter implements Filter {
 
             try {
 
-                filterChain.doFilter(servletRequest, servletResponse);
+//                filterChain.doFilter(servletRequest, servletResponse);
+                ((HttpServletResponse) servletResponse)
+                        .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/editAdmin");
 
             } catch (IOException e) {
 
-                    LOGGER.error("IOException. AdminFilter.doFilter().");
-                e.printStackTrace();
-
-            } catch (ServletException e) {
-
-                    LOGGER.error("ServletException. AdminFilter.doFilter().");
+                LOGGER.error("IOException. AdminFilter.doFilter().");
                 e.printStackTrace();
             }
+//            } catch (ServletException e) {
+//
+//                    LOGGER.error("ServletException. AdminFilter.doFilter().");
+//                e.printStackTrace();
+//            }
 
         } else {
             if(admin == "user"){

@@ -21,24 +21,27 @@ public class UserFilter implements Filter {
         String admin = (String) ((HttpServletRequest) servletRequest)
                 .getSession().getAttribute("rights");
 
-        if (admin == "user") {
+        System.out.println(admin);
+        if (admin == "user" || admin == "admin") {
 
                 LOGGER.debug("UserFilter. user = user");
 
             try {
 
-                filterChain.doFilter(servletRequest, servletResponse);
+//                filterChain.doFilter(servletRequest, servletResponse);
+                ((HttpServletResponse) servletResponse)
+                        .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/reg");
 
             } catch (IOException e) {
 
-                    LOGGER.error("IOException. UserFilter.doFilter().");
-                e.printStackTrace();
-
-            } catch (ServletException e) {
-
-                    LOGGER.error("ServletException. UserFilter.doFilter().");
+                LOGGER.error("IOException. UserFilter.doFilter().");
                 e.printStackTrace();
             }
+//            } catch (ServletException e) {
+//
+//                    LOGGER.error("ServletException. UserFilter.doFilter().");
+//                e.printStackTrace();
+//            }
 
         } else {
 
