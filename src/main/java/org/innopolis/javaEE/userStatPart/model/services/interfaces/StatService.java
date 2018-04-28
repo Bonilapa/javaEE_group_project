@@ -6,5 +6,5 @@ import java.sql.SQLException;
 
 public interface StatService {
 //    Stat getUserStat(Stat stat) throws ServiceException;
-    Stat getStatByUserId(Long id) throws SQLException;
+    Stat getStatByUserId(Integer id) throws SQLException;
 }

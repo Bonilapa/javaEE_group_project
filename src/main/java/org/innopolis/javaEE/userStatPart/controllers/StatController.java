@@ -18,16 +18,17 @@ public class StatController {
     private final StatService statService;
 
     @Autowired
-    public StatService(StatService statService) {
+    public StatController(StatService statService) {
         this.statService = statService;
     }
 
     @RequestMapping(value = "/stat/{id}", method = RequestMethod.GET)
-    public String getStatInfo(Model model, @PathVariable("id") Long id) {
+    public String getStatInfo(@PathVariable("id") Integer id) {
         try {
             Stat stat = statService.getStatByUserId(id);
         } catch (SQLException e) {
             //LOGGER.debug(e);
         }
+        return "stat";
     }
 }

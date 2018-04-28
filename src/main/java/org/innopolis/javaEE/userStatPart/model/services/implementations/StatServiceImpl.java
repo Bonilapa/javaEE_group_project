@@ -19,7 +19,7 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public Stat getStatByUserId(Long id) throws SQLException {
+    public Stat getStatByUserId(Integer id) throws SQLException {
         Stat stat = statRepository.getById(id);
         if (stat == null)
             throw new SQLException("Stat from user with id: " + id + " not found");
