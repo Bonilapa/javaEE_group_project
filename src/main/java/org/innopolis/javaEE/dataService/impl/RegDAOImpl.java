@@ -13,13 +13,14 @@ public class RegDAOImpl implements RegDAO {
 
     @Override
     public void addNewUser(User user) {
-        String sql = "INSERT INTO Users(login, password) VALUES (?, ?);";
+        String sql = "INSERT INTO Users(login, password, rights) VALUES (?, ?, ?);";
 
         try {
             Connection connection = DataSourceFactory.getDataSource().getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
+            statement.setString(3, user.getRights());
             statement.execute();
 
 //            LOGGER.debug("Attempt to take user "+login+" from table Users");

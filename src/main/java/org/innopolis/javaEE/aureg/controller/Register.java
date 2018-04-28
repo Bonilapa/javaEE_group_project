@@ -1,24 +1,22 @@
 package org.innopolis.javaEE.aureg.controller;
 
-import org.innopolis.javaEE.aureg.forms.LoginFrom;
+import org.innopolis.javaEE.aureg.forms.ErrorMessage;
+import org.innopolis.javaEE.aureg.forms.LoginForm;
+import org.innopolis.javaEE.aureg.services.impl.LoginServiceImpl;
 import org.innopolis.javaEE.aureg.services.impl.RegisterServiceImpl;
 import org.innopolis.javaEE.aureg.services.interfaces.LoginService;
 import org.innopolis.javaEE.aureg.services.interfaces.RegisterService;
 import org.innopolis.javaEE.dataService.pojo.User;
 import org.innopolis.javaEE.fileIO.controller.ExportController;
-import org.innopolis.javaEE.fileIO.service.interfaces.ExportService;
 import org.innopolis.javaEE.fileIO.service.util.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -29,6 +27,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/reg")
 public class Register {
     private final static Logger LOGGER = LoggerFactory.getLogger(ExportController.class);
+    private final LoginService loginService = new LoginServiceImpl();
 
     private final RegisterService registerService = new RegisterServiceImpl();
 
@@ -38,15 +37,65 @@ public class Register {
 //    }
 
     @RequestMapping(method = POST)
-    public String registerUser(@ModelAttribute LoginFrom loginFrom) throws IOException, ServiceException {
+    public String registerUser(@ModelAttribute LoginForm loginFrom,
+                               HttpSession httpSession) throws IOException, ServiceException {
 //        LOGGER.debug("Register new user");/
-        User user = new User(loginFrom.getLogin(), loginFrom.getPassword());
-        registerService.register(user);
-        return "redirect:/auth";
+
+
+        if (loginFrom.getRights() == null) {
+            loginFrom.setRights("user");
+        }
+        User user = new User(loginFrom.getLogin(), loginFrom.getPassword(), loginFrom.getRights());
+
+        LOGGER.debug("RegisterServlet adds new user");
+        Integer state = registerService.register(user);
+
+        if (state == null) {
+
+            httpSession.setAttribute("errorMessage", "Such user already exists.");
+
+            return "login";
+
+        } else {
+
+            switch (state) {
+
+                case 0: {
+
+                    User user1 = loginService.auth(user.getLogin(), user.getPassword());
+                    httpSession.setAttribute("userName", user1.getLogin());
+                    httpSession.setAttribute("rights", user1.getRights());
+
+                    return "redirect:/hello";
+                }
+
+                case 1: {
+
+                    httpSession.setAttribute("errorMessage", new String("Empty Password."));
+                    return "register";
+                }
+
+                case -1: {
+
+                    httpSession.setAttribute("errorMessage", new String("Empty Login."));
+                    return "register";
+                }
+
+            }
+        }
+        return "index";
     }
 
     @RequestMapping(method = GET)
-    public String registerUser(){
-        return "register";
+    public String registerUser(HttpSession httpSession){
+        if(httpSession.getAttribute("userName") != null){
+            if( httpSession.getAttribute("rights") == "admin") {
+                return "registerAdmin";
+            }else{
+                return "register";
+            }
+        }else{
+            return "register";
+        }
     }
 }
