@@ -1,15 +1,17 @@
 package org.innopolis.javaEE.aureg.filters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(value = "/editAdmin")
+@WebFilter(value = "/reg")
 public class UserFilter implements Filter {
 
-//        private static final Logger LOGGER = LogManager.getLogger(LoginFilter.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserFilter.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest,
@@ -21,7 +23,7 @@ public class UserFilter implements Filter {
 
         if (admin == "user") {
 
-//                LOGGER.debug("LoginFilter. userLogin = null");
+                LOGGER.debug("UserFilter. user = user");
 
             try {
 
@@ -29,18 +31,18 @@ public class UserFilter implements Filter {
 
             } catch (IOException e) {
 
-//                    LOGGER.error("IOException. LoginFilter.doFilter().");
+                    LOGGER.error("IOException. UserFilter.doFilter().");
                 e.printStackTrace();
 
             } catch (ServletException e) {
 
-//                    LOGGER.error("ServletException. LoginFilter.doFilter().");
+                    LOGGER.error("ServletException. UserFilter.doFilter().");
                 e.printStackTrace();
             }
 
         } else {
 
-//                LOGGER.debug("LoginFilter. userLogin = " + userLogin);
+                LOGGER.debug("LoginFilter. user unknown");
 
             try {
 
@@ -49,7 +51,7 @@ public class UserFilter implements Filter {
 
             } catch (IOException e) {
 
-//                    LOGGER.error("IOException. LoginFilter redirects to /index.");
+                    LOGGER.error("IOException. UserFilter redirects to /index.");
                 e.printStackTrace();
             }
 

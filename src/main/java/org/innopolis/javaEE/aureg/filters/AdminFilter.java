@@ -1,5 +1,8 @@
 package org.innopolis.javaEE.aureg.filters;
 
+import org.innopolis.javaEE.aureg.controller.AdminEdit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +12,7 @@ import java.io.IOException;
 @WebFilter(value = "/editAdmin")
 public class AdminFilter implements Filter {
 
-//        private static final Logger LOGGER = LogManager.getLogger(LoginFilter.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AdminEdit.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest,
@@ -21,7 +24,7 @@ public class AdminFilter implements Filter {
 
         if (admin == "admin") {
 
-//                LOGGER.debug("LoginFilter. userLogin = null");
+                LOGGER.debug("AdminFilter. user = admin");
 
             try {
 
@@ -29,28 +32,44 @@ public class AdminFilter implements Filter {
 
             } catch (IOException e) {
 
-//                    LOGGER.error("IOException. LoginFilter.doFilter().");
+                    LOGGER.error("IOException. AdminFilter.doFilter().");
                 e.printStackTrace();
 
             } catch (ServletException e) {
 
-//                    LOGGER.error("ServletException. LoginFilter.doFilter().");
+                    LOGGER.error("ServletException. AdminFilter.doFilter().");
                 e.printStackTrace();
             }
 
         } else {
+            if(admin == "user"){
 
-//                LOGGER.debug("LoginFilter. userLogin = " + userLogin);
+                LOGGER.debug("AdminFilter. user != admin");
 
-            try {
+                try {
 
-                ((HttpServletResponse) servletResponse)
-                        .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/auth");
+                    ((HttpServletResponse) servletResponse)
+                            .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/hello");
 
-            } catch (IOException e) {
+                } catch (IOException e) {
 
-//                    LOGGER.error("IOException. LoginFilter redirects to /index.");
-                e.printStackTrace();
+                    LOGGER.error("IOException. AdminFilter redirects to /hello.");
+                    e.printStackTrace();
+                }
+            }else {
+                LOGGER.debug("AdminFilter. user unknown");
+
+                try {
+
+                    ((HttpServletResponse) servletResponse)
+                            .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/auth");
+
+                } catch (IOException e) {
+
+                    LOGGER.error("IOException. AdminFilter redirects to /auth.");
+                    e.printStackTrace();
+                }
+
             }
 
         }

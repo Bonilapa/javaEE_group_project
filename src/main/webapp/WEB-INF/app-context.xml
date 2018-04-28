@@ -21,4 +21,8 @@
     <bean id="employeeDAO" class="org.innopolis.javaEE.dataService.impl.EmployeeDAOImpl">
 
     </bean>
+
+    <bean id="loginService" class="org.innopolis.javaEE.aureg.services.impl.LoginServiceImpl"/>
+    <bean id="registerService" class="org.innopolis.javaEE.aureg.services.impl.RegisterServiceImpl"/>
+    <bean id="userRightsEditService" class="org.innopolis.javaEE.aureg.services.impl.UserRightsEditServiceImpl"/>
 </beans>
