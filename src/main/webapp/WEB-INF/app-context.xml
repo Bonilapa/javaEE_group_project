@@ -13,4 +13,12 @@
         <property name = "prefix" value = "/" />
         <property name = "suffix" value = ".jsp" />
     </bean>
+
+    <bean id="exportService" class="org.innopolis.javaEE.fileIO.service.implementations.ExportServiceImpl">
+
+    </bean>
+
+    <bean id="employeeDAO" class="org.innopolis.javaEE.dataService.impl.EmployeeDAOImpl">
+
+    </bean>
 </beans>
