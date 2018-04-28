@@ -1,21 +1,20 @@
 package org.innopolis.javaEE.aureg.controller;
 
 
-import org.innopolis.javaEE.aureg.forms.LoginFrom;
+import org.innopolis.javaEE.aureg.forms.ErrorMessage;
+import org.innopolis.javaEE.aureg.forms.LoginForm;
 import org.innopolis.javaEE.aureg.services.impl.LoginServiceImpl;
 import org.innopolis.javaEE.aureg.services.interfaces.LoginService;
+import org.innopolis.javaEE.dataService.pojo.User;
 import org.innopolis.javaEE.fileIO.service.util.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -34,18 +33,23 @@ public class Authorize {
 //    }
 
     @RequestMapping(method = POST)
-    public String auth(@ModelAttribute LoginFrom loginFrom) throws IOException, ServiceException {
+    public String auth(@ModelAttribute LoginForm loginForm,
+                       HttpSession httpSession) throws IOException, ServiceException {
 //        LOGGER.debug("user auth");
+        User user = loginService.auth(loginForm.getLogin(), loginForm.getPassword());
+        if (user != null && user.getLogin() != null) {
 
-        if (loginService.auth(loginFrom.getLogin(), loginFrom.getPassword())) {
-            System.out.println("authed");
-//            req.getSession().setAttribute("userLogin", loginFrom.getLogin());
-            return "index";
+
+            httpSession.setAttribute("userName", user.getLogin());
+            httpSession.setAttribute("rights", user.getRights());
+
+                return "redirect:/hello";
         }else{
-            System.out.println("NOT");
-            return "register";
+            httpSession.setAttribute("errorMessage", "Incorrect login or password.");
+            return "login";
         }
     }
+
     @RequestMapping(method = GET)
     public String show(){
         return "login";
