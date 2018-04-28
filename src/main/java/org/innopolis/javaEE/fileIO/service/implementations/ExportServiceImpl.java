@@ -2,11 +2,13 @@ package org.innopolis.javaEE.fileIO.service.implementations;
 
 import org.innopolis.javaEE.dataService.interfaces.EmployeeDAO;
 import org.innopolis.javaEE.dataService.pojo.Employee;
+import org.innopolis.javaEE.dataService.utils.DAOException;
 import org.innopolis.javaEE.fileIO.service.interfaces.ExportService;
 import org.innopolis.javaEE.fileIO.service.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.json.*;
+import java.util.List;
 
 public class ExportServiceImpl implements ExportService {
 
@@ -19,7 +21,12 @@ public class ExportServiceImpl implements ExportService {
 
     @Override
     public JsonObject getExportFile() throws ServiceException {
-        Employee[] employees = employeeDAO.getEmployees();
+        List<Employee> employees = null;
+        try {
+            employees = employeeDAO.getEmployees();
+        } catch (DAOException e) {
+            throw new ServiceException();
+        }
         JsonArrayBuilder jsonArrayBuilder =Json.createArrayBuilder();
         for (Employee employee: employees){
             jsonArrayBuilder = jsonArrayBuilder

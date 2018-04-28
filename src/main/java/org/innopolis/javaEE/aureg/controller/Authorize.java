@@ -1,7 +1,6 @@
 package org.innopolis.javaEE.aureg.controller;
 
 
-import org.innopolis.javaEE.aureg.forms.ErrorMessage;
 import org.innopolis.javaEE.aureg.forms.LoginForm;
 import org.innopolis.javaEE.aureg.services.impl.LoginServiceImpl;
 import org.innopolis.javaEE.aureg.services.interfaces.LoginService;
