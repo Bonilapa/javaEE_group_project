@@ -23,8 +23,10 @@ public class AuthDAOImpl implements AuthDAO {
             ResultSet resultSet = statement.executeQuery();
 
             resultSet.next();
-            user = new User(resultSet.getInt("id"), resultSet.getString("login"),
-                    resultSet.getString("password"));
+            user = new User(resultSet.getInt("id"),
+                    resultSet.getString("login"),
+                    resultSet.getString("password"),
+                    resultSet.getString("rights"));
 
 //            LOGGER.debug("Attempt to take user "+login+" from table Users");
             resultSet.close();
@@ -33,6 +35,39 @@ public class AuthDAOImpl implements AuthDAO {
         } catch (SQLException e) {
 //            LOGGER.debug(e);
         }
+        return user;
+    }
+    @Override
+    public User getUserByLogin(String login){
+
+//        LOGGER.debug("LoginDAO. getUserById.");
+
+        User user = null;
+        String sql = "SELECT * FROM Users WHERE Login = ?;";
+
+        try {
+            Connection connection = DataSourceFactory.getDataSource().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, login);
+
+//            LOGGER.debug("Take user " + login + " from table Users");
+
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+            user = new User(resultSet.getInt("id"), resultSet.getString("login"),
+                    resultSet.getString("password"));
+
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+
+//            LOGGER.error(e);
+        }
+
         return user;
     }
 }
