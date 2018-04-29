@@ -22,28 +22,27 @@ public class AuthDAOImpl implements AuthDAO {
         User user = null;
         String sql = "SELECT * FROM Users WHERE Login = ? AND Password = ?;";
 
-        try {
-            Connection connection = DataSourceFactory.getDataSource().getConnection();
+        LOGGER.debug("Attempt to take user "+login+" from table Users");
+
+        try(Connection connection = DataSourceFactory.getDataSource().getConnection()) {
+
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, login);
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
-
             resultSet.next();
             user = new User(resultSet.getInt("id"),
                     resultSet.getString("login"),
                     resultSet.getString("password"),
                     resultSet.getString("rights"));
 
-            LOGGER.debug("Attempt to take user "+login+" from table Users");
             resultSet.close();
             statement.close();
             connection.close();
 
         } catch (SQLException e) {
 
-            LOGGER.error("SQLException ");
-            e.printStackTrace();
+            LOGGER.error("SQLException ", e);
         }
         return user;
     }
@@ -56,19 +55,16 @@ public class AuthDAOImpl implements AuthDAO {
         User user = null;
         String sql = "SELECT * FROM Users WHERE Login = ?;";
 
-        try {
-            Connection connection = DataSourceFactory.getDataSource().getConnection();
+        LOGGER.debug("Take user " + login + " from table Users");
+
+        try(Connection connection = DataSourceFactory.getDataSource().getConnection()) {
+
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, login);
-
-            LOGGER.debug("Take user " + login + " from table Users");
-
             ResultSet resultSet = statement.executeQuery();
-
             resultSet.next();
             user = new User(resultSet.getInt("id"), resultSet.getString("login"),
                     resultSet.getString("password"));
-
 
             resultSet.close();
             statement.close();
@@ -76,8 +72,7 @@ public class AuthDAOImpl implements AuthDAO {
 
         } catch (SQLException e) {
 
-            LOGGER.error("SQLException ");
-            e.printStackTrace();
+            LOGGER.error("SQLException ", e);
         }
 
         return user;

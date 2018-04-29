@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Collections;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -26,9 +29,17 @@ public class AdminEdit {
 
 
     @RequestMapping(method = POST)
-    public String editAdminRights(@ModelAttribute EditRights editRights){
+    public String editAdminRights(@ModelAttribute EditRights editRights,
+                                  @ModelAttribute Dislogin dislogin,
+                                  HttpSession httpSession){
+        if(dislogin != null){
+            httpSession.setAttribute("userName", "");
+            httpSession.setAttribute("rights", "");
+            return "redirect:/auth";
 
+        }
         LOGGER.debug("POST: edit admin rights");
+
         Integer admin = editRights.getAdminRights(),
                 user = editRights.getUserRights(),
                 delete = editRights.getDeleteUser();
@@ -61,8 +72,9 @@ public class AdminEdit {
     }
 
     @RequestMapping(method=GET)
-    public ModelAndView index() {
+    public ModelAndView index(HttpSession httpSession) {
 
+        httpSession.setAttribute("errorMessage", "");
         LOGGER.debug("GET: index");
         return new ModelAndView("editAdmin",
                 Collections.singletonMap("list", userRightsEditService.getAll()));

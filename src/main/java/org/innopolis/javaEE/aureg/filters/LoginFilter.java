@@ -2,16 +2,17 @@ package org.innopolis.javaEE.aureg.filters;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(value = "/reg")
-public class UserFilter implements Filter {
+@WebFilter(value = "/auth")
+public class LoginFilter implements Filter {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(UserFilter.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(LoginFilter.class);
 
     @Override
     public void doFilter(ServletRequest servletRequest,
@@ -21,9 +22,23 @@ public class UserFilter implements Filter {
         String admin = (String) ((HttpServletRequest) servletRequest)
                 .getSession().getAttribute("rights");
 
-        if (!"user".equals(admin)) {
+        if ("user".equals(admin) || "admin".equals(admin)) {
 
-                LOGGER.debug("UserFilter. user = user");
+            LOGGER.debug("LoginFilter. user unknown");
+
+            try {
+
+                ((HttpServletResponse) servletResponse)
+                        .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/hello");
+
+            } catch (IOException e) {
+
+                LOGGER.error("IOException. UserFilter redirects to /hello.", e);
+            }
+
+        } else {
+
+            LOGGER.debug("UserFilter. user = user");
 
             try {
 
@@ -34,21 +49,7 @@ public class UserFilter implements Filter {
                 LOGGER.error("IOException. UserFilter.doFilter().", e);
             } catch (ServletException e) {
 
-                    LOGGER.error("ServletException. UserFilter.doFilter().", e);
-            }
-
-        } else {
-
-                LOGGER.debug("LoginFilter. user unknown");
-
-            try {
-
-                ((HttpServletResponse) servletResponse)
-                        .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/hello");
-
-            } catch (IOException e) {
-
-                    LOGGER.error("IOException. UserFilter redirects to /hello.", e);
+                LOGGER.error("ServletException. UserFilter.doFilter().", e);
             }
 
         }

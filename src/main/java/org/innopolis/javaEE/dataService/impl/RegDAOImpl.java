@@ -20,28 +20,28 @@ public class RegDAOImpl implements RegDAO {
 
         String sql = "INSERT INTO Users(login, password, rights) VALUES (?, ?, ?);";
 
-        try {
-            Connection connection = DataSourceFactory.getDataSource().getConnection();
+        LOGGER.debug("Set user with login: " +
+                user.getLogin() +
+                "; and password: " +
+                user.getPassword() +
+                "; and rights: " +
+                user.getRights() +
+                "; into Users");
+
+        try(Connection connection = DataSourceFactory.getDataSource().getConnection()) {
+
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getRights());
             statement.execute();
 
-            LOGGER.debug("Set user with login: " +
-                    user.getLogin() +
-                    "; and password: " +
-                    user.getPassword() +
-                    "; and rights: " +
-                    user.getRights() +
-                    "; into Users");
-
             statement.close();
             connection.close();
 
         } catch (SQLException e) {
-            LOGGER.error("SQLException ");
-            e.printStackTrace();
+
+            LOGGER.error("SQLException ", e);
         }
 
     }

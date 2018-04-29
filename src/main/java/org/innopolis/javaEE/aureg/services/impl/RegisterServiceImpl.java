@@ -4,6 +4,7 @@ import org.innopolis.javaEE.aureg.services.interfaces.RegisterService;
 import org.innopolis.javaEE.dataService.impl.AuthDAOImpl;
 import org.innopolis.javaEE.dataService.impl.RegDAOImpl;
 import org.innopolis.javaEE.dataService.pojo.User;
+import org.innopolis.javaEE.utils.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,18 +17,18 @@ public class RegisterServiceImpl implements RegisterService {
     private static AuthDAOImpl authDAO = new AuthDAOImpl();
 
     @Override
-    public Integer register(User user){
+    public Valid.Error register(User user){
         LOGGER.debug("UserService. addUser.");
 
         if (user.getLogin() == "") {
 
             LOGGER.debug("Empty login put.");
-            return -1;
+            return Valid.Error.EmptyLogin;
 
         } else if (user.getPassword() == "") {
 
             LOGGER.debug("Empty password put.");
-            return 1;
+            return Valid.Error.EmptyPassword;
 
         } else {
 
@@ -37,12 +38,12 @@ public class RegisterServiceImpl implements RegisterService {
 
                 LOGGER.debug("Add new user:" + user.getLogin());
                 regDAO.addNewUser(user);
-                return 0;
+                return Valid.Error.Correct;
 
             } else {
 
                 LOGGER.debug("User: " + user.getLogin() + " is already exists.");
-                return null;
+                return Valid.Error.Exists;
             }
 
         }

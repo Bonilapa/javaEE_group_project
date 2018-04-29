@@ -22,41 +22,37 @@ public class AdminFilter implements Filter {
         String admin = (String) ((HttpServletRequest) servletRequest)
                 .getSession().getAttribute("rights");
 
-        if (admin == "admin") {
+        if ("admin".equals(admin)) {
 
+            System.out.println(admin);
                 LOGGER.debug("AdminFilter. user = admin");
 
             try {
 
-//                filterChain.doFilter(servletRequest, servletResponse);
-                ((HttpServletResponse) servletResponse)
-                        .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/editAdmin");
+                filterChain.doFilter(servletRequest, servletResponse);
 
             } catch (IOException e) {
 
-                LOGGER.error("IOException. AdminFilter.doFilter().");
-                e.printStackTrace();
+                LOGGER.error("IOException. AdminFilter.doFilter().", e);
+
+            } catch (ServletException e) {
+
+                    LOGGER.error("ServletException. AdminFilter.doFilter().", e);
             }
-//            } catch (ServletException e) {
-//
-//                    LOGGER.error("ServletException. AdminFilter.doFilter().");
-//                e.printStackTrace();
-//            }
 
         } else {
-            if(admin == "user"){
+            if("user".equals(admin)){
 
                 LOGGER.debug("AdminFilter. user != admin");
 
                 try {
 
                     ((HttpServletResponse) servletResponse)
-                            .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/hello");
+                            .sendRedirect(((HttpServletRequest) servletRequest).getContextPath() + "/error");
 
                 } catch (IOException e) {
 
-                    LOGGER.error("IOException. AdminFilter redirects to /hello.");
-                    e.printStackTrace();
+                    LOGGER.error("IOException. AdminFilter redirects to /error.", e);
                 }
             }else {
                 LOGGER.debug("AdminFilter. user unknown");
@@ -68,8 +64,7 @@ public class AdminFilter implements Filter {
 
                 } catch (IOException e) {
 
-                    LOGGER.error("IOException. AdminFilter redirects to /auth.");
-                    e.printStackTrace();
+                    LOGGER.error("IOException. AdminFilter redirects to /auth.", e);
                 }
 
             }

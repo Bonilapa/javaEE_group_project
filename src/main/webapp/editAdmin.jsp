@@ -12,7 +12,10 @@
     <title>Title</title>
 </head>
 <body>
-Hello, <c:out value="${userName}"/> :: <c:out value="${rights}"/>
+Hello, <c:out value="${userName}"/> :: <c:out value="${rights}"/><form method="post">
+    <input type="hidden" name="dislogin" value="dislogin">
+    <input type = "submit" value = "Dislogin"/>
+</form>
 <hr>
 <p>Map:</p>
 <p><a href="/hello" method="get" name="getDescription" value="hello">Index</a></p>

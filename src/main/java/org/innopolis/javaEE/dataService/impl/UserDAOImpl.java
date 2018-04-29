@@ -19,14 +19,12 @@ public class UserDAOImpl implements UserDAO {
 
         String sql = "UPDATE users SET RIGHTS='admin' WHERE ID=?;";
 
-        try {
+        LOGGER.debug("Make user with id: " + id + " admin.");
 
-            Connection connection = DataSourceFactory.getDataSource().getConnection();
+        try(Connection connection = DataSourceFactory.getDataSource().getConnection()) {
+
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
-
-            LOGGER.debug("Make user with id: " + id + " admin.");
-
             statement.execute();
 
             statement.close();
@@ -34,8 +32,7 @@ public class UserDAOImpl implements UserDAO {
 
         } catch (SQLException e) {
 
-            LOGGER.error("SQLException ");
-            e.printStackTrace();
+            LOGGER.error("SQLException ", e);
             return false;
         }
 
@@ -46,16 +43,14 @@ public class UserDAOImpl implements UserDAO {
     public boolean updateUserRights(Integer id){
 
         LOGGER.debug("UserDAO. updateUserRights.");
+
         String sql = "UPDATE users SET RIGHTS='user' WHERE ID=?;";
 
-        try {
+        LOGGER.debug("Make user with id: " + id + " user.");
+        try(Connection connection = DataSourceFactory.getDataSource().getConnection()) {
 
-            Connection connection = DataSourceFactory.getDataSource().getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
-
-            LOGGER.debug("Make user with id: " + id + " user.");
-
             statement.execute();
 
             statement.close();
@@ -63,8 +58,7 @@ public class UserDAOImpl implements UserDAO {
 
         } catch (SQLException e) {
 
-            LOGGER.error("SQLException");
-            e.printStackTrace();
+            LOGGER.error("SQLException", e);
             return false;
         }
 
@@ -78,14 +72,12 @@ public class UserDAOImpl implements UserDAO {
 
         String sql = "DELETE FROM users WHERE ID=?;";
 
-        try {
+        LOGGER.debug("Delete user: " + id);
 
-            Connection connection = DataSourceFactory.getDataSource().getConnection();
+        try(Connection connection = DataSourceFactory.getDataSource().getConnection()) {
+
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
-
-            LOGGER.debug("Delete user: " + id);
-
             statement.execute();
 
             statement.close();
@@ -93,24 +85,21 @@ public class UserDAOImpl implements UserDAO {
 
         } catch (SQLException e) {
 
-            LOGGER.error("SQLException");
-            e.printStackTrace();
+            LOGGER.error("SQLException", e);
             return false;
         }
 
         return true;
     }
+
     @Override
     public ArrayList<UserForm> getAll(){
         ArrayList<UserForm> list = new ArrayList<>();
 
-        try {
+        LOGGER.debug("Get all users from users");
 
-            Connection connection = DataSourceFactory.getDataSource().getConnection();
+        try(Connection connection = DataSourceFactory.getDataSource().getConnection()) {
             Statement statement = connection.createStatement();
-
-            LOGGER.debug("Get all users from users");
-
             ResultSet resultSet = statement.executeQuery("SELECT * FROM users;");
 
             while (resultSet.next()) {
@@ -127,8 +116,7 @@ public class UserDAOImpl implements UserDAO {
 
         } catch (SQLException e) {
 
-            LOGGER.error("SQLException");
-            e.printStackTrace();
+            LOGGER.error("SQLException", e);
         }
 
         return list;

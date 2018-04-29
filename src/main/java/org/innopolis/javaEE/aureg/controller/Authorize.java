@@ -1,6 +1,7 @@
 package org.innopolis.javaEE.aureg.controller;
 
 
+import org.innopolis.javaEE.aureg.forms.Dislogin;
 import org.innopolis.javaEE.aureg.forms.LoginForm;
 import org.innopolis.javaEE.aureg.services.impl.LoginServiceImpl;
 import org.innopolis.javaEE.dataService.pojo.User;
@@ -32,26 +33,33 @@ public class Authorize {
 
         LOGGER.debug("POST: auth");
 
-        User user = loginService.auth(loginForm.getLogin(), loginForm.getPassword());
-
-        if (user != null && user.getLogin() != null) {
-
-            LOGGER.debug("Authorized user: " + user.getLogin());
-
-            httpSession.setAttribute("userName", user.getLogin());
-            httpSession.setAttribute("rights", user.getRights());
-            return "redirect:/hello";
-        }else{
-
-            LOGGER.debug("Unsuccessful attempt to authorize user: " + user.getLogin());
-
+        if (loginForm.getPassword().equals("")  || loginForm.getLogin().equals("")) {
             httpSession.setAttribute("errorMessage", "Incorrect login or password.");
             return "login";
+        }else {
+            User user = loginService.auth(loginForm.getLogin(), loginForm.getPassword());
+
+            if (user != null) {
+
+                LOGGER.debug("Authorized user: " + user.getLogin());
+
+                httpSession.setAttribute("userName", user.getLogin());
+                httpSession.setAttribute("rights", user.getRights());
+                return "redirect:/hello";
+            } else {
+
+                LOGGER.debug("Unsuccessful attempt to authorize user: " + loginForm.getLogin());
+
+                httpSession.setAttribute("errorMessage", "Incorrect login or password.");
+                return "login";
+            }
         }
     }
 
     @RequestMapping(method = GET)
-    public String show(){
+    public String show(HttpSession httpSession){
+
+        httpSession.setAttribute("errorMessage", "");
 
         LOGGER.debug("GET: show");
 

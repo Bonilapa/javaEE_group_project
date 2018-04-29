@@ -5,9 +5,11 @@ import org.innopolis.javaEE.dataService.pojo.Employee;
 import org.innopolis.javaEE.fileIO.service.interfaces.ExportService;
 import org.innopolis.javaEE.fileIO.service.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.json.*;
 
+@Service
 public class ExportServiceImpl implements ExportService {
 
     private final EmployeeDAO employeeDAO;

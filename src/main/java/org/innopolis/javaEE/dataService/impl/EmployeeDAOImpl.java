@@ -3,7 +3,9 @@ package org.innopolis.javaEE.dataService.impl;
 import org.innopolis.javaEE.dataService.interfaces.EmployeeDAO;
 import org.innopolis.javaEE.dataService.pojo.Employee;
 import org.innopolis.javaEE.dataService.pojo.Time;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public Employee[] getEmployees() {
@@ -50,5 +52,15 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public Employee getEmployee(int id) {
         return null;
+    }
+
+    @Override
+    public void addEmployee(Employee employee) {
+        System.out.println("Added");
+    }
+
+    @Override
+    public void clearEmployees() {
+        System.out.println("Cleared");
     }
 }

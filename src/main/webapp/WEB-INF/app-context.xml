@@ -14,15 +14,8 @@
         <property name = "suffix" value = ".jsp" />
     </bean>
 
-    <bean id="exportService" class="org.innopolis.javaEE.fileIO.service.implementations.ExportServiceImpl">
 
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10000000"/>
     </bean>
-
-    <bean id="employeeDAO" class="org.innopolis.javaEE.dataService.impl.EmployeeDAOImpl">
-
-    </bean>
-
-    <bean id="loginService" class="org.innopolis.javaEE.aureg.services.impl.LoginServiceImpl"/>
-    <bean id="registerService" class="org.innopolis.javaEE.aureg.services.impl.RegisterServiceImpl"/>
-    <bean id="userRightsEditService" class="org.innopolis.javaEE.aureg.services.impl.UserRightsEditServiceImpl"/>
 </beans>
